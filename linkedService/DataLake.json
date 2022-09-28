@@ -1,12 +1,8 @@
 {
 	"name": "DataLake",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"annotations": [],
 		"type": "AzureBlobStorage",
-		"typeProperties": {
-			"serviceEndpoint": "https://stglabdataengineer.blob.core.windows.net/",
-			"accountKind": "StorageV2"
-		}
-	}
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
