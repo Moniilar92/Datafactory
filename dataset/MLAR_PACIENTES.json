@@ -1,0 +1,56 @@
+{
+	"name": "MLAR_PACIENTES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Pacientes",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Pacientes.xlsx",
+				"folderPath": "MLAR",
+				"container": "datoslabs"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "nombres",
+				"type": "String"
+			},
+			{
+				"name": "apellidos",
+				"type": "String"
+			},
+			{
+				"name": "sexo",
+				"type": "String"
+			},
+			{
+				"name": "fecha nacimiento",
+				"type": "String"
+			},
+			{
+				"name": "identificacion",
+				"type": "String"
+			},
+			{
+				"name": "tipo identificacion",
+				"type": "String"
+			},
+			{
+				"name": "direccion",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

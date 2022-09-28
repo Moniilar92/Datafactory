@@ -1,0 +1,142 @@
+{
+	"name": "dataflow_MLAR",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MLAR_MEDICOS",
+						"type": "DatasetReference"
+					},
+					"name": "MEDICOS"
+				},
+				{
+					"dataset": {
+						"referenceName": "MLAR_PACIENTES",
+						"type": "DatasetReference"
+					},
+					"name": "PACIENTES"
+				},
+				{
+					"dataset": {
+						"referenceName": "MLAR_TRAT_REALIZADO",
+						"type": "DatasetReference"
+					},
+					"name": "TRATAMIENTOSREALIZADOS"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "MLAR_RECEPTOR",
+						"type": "DatasetReference"
+					},
+					"name": "SALIDA",
+					"rejectedDataLinkedService": {
+						"referenceName": "DataLake",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "TRAPACIENTES"
+				},
+				{
+					"name": "TRAMEDICOS"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          nombres as string,",
+				"          apellidos as string,",
+				"          identificacion as string,",
+				"          {tipo identificacion} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> MEDICOS",
+				"source(output(",
+				"          id as string,",
+				"          nombres as string,",
+				"          apellidos as string,",
+				"          sexo as string,",
+				"          {fecha nacimiento} as string,",
+				"          identificacion as string,",
+				"          {tipo identificacion} as string,",
+				"          direccion as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> PACIENTES",
+				"source(output(",
+				"          id as string,",
+				"          idpaciente as string,",
+				"          idmedico as string,",
+				"          idtratamiento as string,",
+				"          valor as string,",
+				"          fecha as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> TRATAMIENTOSREALIZADOS",
+				"TRATAMIENTOSREALIZADOS, PACIENTES join(idpaciente == PACIENTES@id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TRAPACIENTES",
+				"select1, MEDICOS join(idmedico == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TRAMEDICOS",
+				"TRAPACIENTES select(mapColumn(",
+				"          idmedico,",
+				"          idtratamiento,",
+				"          valor,",
+				"          fecha,",
+				"          nombres,",
+				"          apellidos,",
+				"          sexo,",
+				"          {fecha nacimiento},",
+				"          identificacion,",
+				"          {tipo identificacion},",
+				"          direccion",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"TRAMEDICOS select(mapColumn(",
+				"          idtratamiento,",
+				"          valor,",
+				"          fecha,",
+				"          nombres_paciente = select1@nombres,",
+				"          apellidos_paciente = select1@apellidos,",
+				"          sexo_paciente = sexo,",
+				"          {fecha nacimiento},",
+				"          identificacion_paciente = select1@identificacion,",
+				"          {tipo identificacion_paciente} = select1@{tipo identificacion},",
+				"          direccion,",
+				"          nombres_medico = MEDICOS@nombres,",
+				"          apellidos_medico = MEDICOS@apellidos,",
+				"          identificacion_medico = MEDICOS@identificacion,",
+				"          {tipo identificacion_medico} = MEDICOS@{tipo identificacion}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1) ~> SALIDA"
+			]
+		}
+	}
+}

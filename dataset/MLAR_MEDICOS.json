@@ -1,0 +1,44 @@
+{
+	"name": "MLAR_MEDICOS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Medicos",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Medicos.xlsx",
+				"folderPath": "MLAR",
+				"container": "datoslabs"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "nombres",
+				"type": "String"
+			},
+			{
+				"name": "apellidos",
+				"type": "String"
+			},
+			{
+				"name": "identificacion",
+				"type": "String"
+			},
+			{
+				"name": "tipo identificacion",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

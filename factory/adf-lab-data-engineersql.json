@@ -1,0 +1,9 @@
+{
+	"name": "adf-lab-data-engineersql",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b56b1191-8e3e-4cbb-9d58-e328187dd173",
+		"tenantId": "3048dc87-43f0-4100-9acb-ae1971c79395"
+	}
+}
