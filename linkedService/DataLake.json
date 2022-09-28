@@ -1,6 +1,11 @@
 {
 	"name": "DataLake",
 	"properties": {
+		"parameters": {
+			"cadenaconexion": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
