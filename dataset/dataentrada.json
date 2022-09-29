@@ -7,7 +7,8 @@
 		},
 		"parameters": {
 			"entrada": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "TratamientosRealizados.xlsx"
 			}
 		},
 		"annotations": [],
