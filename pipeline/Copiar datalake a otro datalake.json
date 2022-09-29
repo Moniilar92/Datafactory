@@ -48,13 +48,19 @@
 				"inputs": [
 					{
 						"referenceName": "dataentrada",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"entrada": "TratamientosRealizados.xlsx"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "datasalida",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"salida": "datasalida"
+						}
 					}
 				]
 			}
