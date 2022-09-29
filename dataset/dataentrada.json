@@ -1,0 +1,44 @@
+{
+	"name": "dataentrada",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"entrada": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "TratamientosRealizados",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "TratamientosRealizados.xlsx",
+				"container": "dataentrada"
+			}
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	}
+}
