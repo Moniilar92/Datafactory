@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CAG_Dataflow",
+				"name": "DataflowCG",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflowCAG",
+						"referenceName": "DataflowCG",
 						"type": "DataFlowReference"
 					},
 					"compute": {
