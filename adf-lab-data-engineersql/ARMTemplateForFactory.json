@@ -153,7 +153,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "CAG_Dataflow",
+						"name": "DataflowCG",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -166,14 +166,14 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "dataflowCAG",
+								"referenceName": "DataflowCG",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"CAGPACIENTES": {},
-									"CAGMEDICOS": {},
-									"CAGTRATAMIENTOSREALIZADOS": {},
-									"SalidaCAG": {}
+									"Medicos": {},
+									"Pacientes": {},
+									"TratamientosRealizados": {},
+									"ReceptorCG": {}
 								}
 							},
 							"staging": {},
@@ -193,7 +193,7 @@
 				"lastPublishTime": "2022-09-14T19:46:57Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflowCAG')]"
+				"[concat(variables('factoryId'), '/dataflows/DataflowCG')]"
 			]
 		},
 		{
@@ -1184,153 +1184,6 @@
 				"[concat(variables('factoryId'), '/datasets/CAG_PACIENTES')]",
 				"[concat(variables('factoryId'), '/datasets/CAG_TRATAMIENTOS_REALIZADOS')]",
 				"[concat(variables('factoryId'), '/datasets/ReceptorCombinado')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflowCAG')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "CAG_PACIENTES",
-								"type": "DatasetReference"
-							},
-							"name": "CAGPACIENTES"
-						},
-						{
-							"dataset": {
-								"referenceName": "CAG_MEDICO",
-								"type": "DatasetReference"
-							},
-							"name": "CAGMEDICOS"
-						},
-						{
-							"dataset": {
-								"referenceName": "CAG_TRATAMIENTOS_REALIZADOS",
-								"type": "DatasetReference"
-							},
-							"name": "CAGTRATAMIENTOSREALIZADOS"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "CAG_RECEPTOR",
-								"type": "DatasetReference"
-							},
-							"name": "SalidaCAG"
-						}
-					],
-					"transformations": [
-						{
-							"name": "TRAPACIENTES"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "TRAMEDICOS"
-						},
-						{
-							"name": "select2"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          id as string,",
-						"          nombres as string,",
-						"          apellidos as string,",
-						"          sexo as string,",
-						"          {fecha nacimiento} as string,",
-						"          identificacion as string,",
-						"          {tipo identificacion} as string,",
-						"          direccion as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> CAGPACIENTES",
-						"source(output(",
-						"          id as string,",
-						"          nombres as string,",
-						"          apellidos as string,",
-						"          identificacion as string,",
-						"          {tipo identificacion} as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> CAGMEDICOS",
-						"source(output(",
-						"          id as string,",
-						"          idpaciente as string,",
-						"          idmedico as string,",
-						"          idtratamiento as string,",
-						"          valor as string,",
-						"          fecha as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> CAGTRATAMIENTOSREALIZADOS",
-						"CAGTRATAMIENTOSREALIZADOS, CAGPACIENTES join(idpaciente == CAGPACIENTES@id,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> TRAPACIENTES",
-						"TRAPACIENTES select(mapColumn(",
-						"          idmedico,",
-						"          idtratamiento,",
-						"          valor,",
-						"          fecha,",
-						"          nombres,",
-						"          apellidos,",
-						"          sexo,",
-						"          {fecha nacimiento},",
-						"          identificacion,",
-						"          {tipo identificacion},",
-						"          direccion",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1, CAGMEDICOS join(idmedico == id,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> TRAMEDICOS",
-						"TRAMEDICOS select(mapColumn(",
-						"          idmedico,",
-						"          idtratamiento,",
-						"          valor,",
-						"          fecha,",
-						"          nombresPaciente = select1@nombres,",
-						"          apellidosPaciente = select1@apellidos,",
-						"          sexoPaciente = sexo,",
-						"          {fecha nacimiento},",
-						"          identificacionPaciente = select1@identificacion,",
-						"          {tipo identificacionPaciente} = select1@{tipo identificacion},",
-						"          direccion,",
-						"          id,",
-						"          nombresMedico = CAGMEDICOS@nombres,",
-						"          apellidosMedico = CAGMEDICOS@apellidos,",
-						"          identificacionMedico = CAGMEDICOS@identificacion,",
-						"          {tipo identificacionMedico} = CAGMEDICOS@{tipo identificacion}",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select2",
-						"select2 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> SalidaCAG"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CAG_PACIENTES')]",
-				"[concat(variables('factoryId'), '/datasets/CAG_MEDICO')]",
-				"[concat(variables('factoryId'), '/datasets/CAG_TRATAMIENTOS_REALIZADOS')]",
-				"[concat(variables('factoryId'), '/datasets/CAG_RECEPTOR')]"
 			]
 		},
 		{
