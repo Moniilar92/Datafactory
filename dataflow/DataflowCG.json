@@ -1,0 +1,149 @@
+{
+	"name": "DataflowCG",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "CAG_MEDICO",
+						"type": "DatasetReference"
+					},
+					"name": "Medicos"
+				},
+				{
+					"dataset": {
+						"referenceName": "CAG_PACIENTES",
+						"type": "DatasetReference"
+					},
+					"name": "Pacientes"
+				},
+				{
+					"dataset": {
+						"referenceName": "CAG_TRATAMIENTOS_REALIZADOS",
+						"type": "DatasetReference"
+					},
+					"name": "TratamientosRealizados"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ReceptorCombinado",
+						"type": "DatasetReference"
+					},
+					"name": "ReceptorCG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joinPacientes"
+				},
+				{
+					"name": "selectJoinPacientes"
+				},
+				{
+					"name": "joinMedicos"
+				},
+				{
+					"name": "selectJoinMedicos"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          nombres as string,",
+				"          apellidos as string,",
+				"          identificacion as string,",
+				"          {tipo identificacion} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Medicos",
+				"source(output(",
+				"          id as string,",
+				"          nombres as string,",
+				"          apellidos as string,",
+				"          sexo as string,",
+				"          {fecha nacimiento} as string,",
+				"          identificacion as string,",
+				"          {tipo identificacion} as string,",
+				"          direccion as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Pacientes",
+				"source(output(",
+				"          id as string,",
+				"          idpaciente as string,",
+				"          idmedico as string,",
+				"          idtratamiento as string,",
+				"          valor as string,",
+				"          fecha as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> TratamientosRealizados",
+				"TratamientosRealizados, Pacientes join(idpaciente == Pacientes@id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinPacientes",
+				"joinPacientes select(mapColumn(",
+				"          idpaciente,",
+				"          idmedico,",
+				"          idtratamiento,",
+				"          valor,",
+				"          fecha,",
+				"          nombres,",
+				"          apellidos,",
+				"          sexo,",
+				"          identificacion",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectJoinPacientes",
+				"selectJoinPacientes, Medicos join(idmedico == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinMedicos",
+				"joinMedicos select(mapColumn(",
+				"          valor,",
+				"          fecha,",
+				"          nombres_paciente = selectJoinPacientes@nombres,",
+				"          apellidos_paciente = selectJoinPacientes@apellidos,",
+				"          sexo,",
+				"          identificacion_paciente = selectJoinPacientes@identificacion,",
+				"          nombres_medico = Medicos@nombres,",
+				"          apellidos_medico = Medicos@apellidos,",
+				"          identificacion_medico = Medicos@identificacion,",
+				"          {tipo identificacion}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectJoinMedicos",
+				"selectJoinMedicos sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Column_1 as string,",
+				"          Column_2 as string,",
+				"          Column_3 as string,",
+				"          Column_4 as string,",
+				"          Column_5 as string,",
+				"          Column_6 as string,",
+				"          Column_7 as string,",
+				"          Column_8 as string,",
+				"          Column_9 as string,",
+				"          Column_10 as string,",
+				"          Column_11 as string,",
+				"          Column_12 as string,",
+				"          Column_13 as string,",
+				"          Column_14 as string,",
+				"          Column_15 as string,",
+				"          Column_16 as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ReceptorCG"
+			]
+		}
+	}
+}
