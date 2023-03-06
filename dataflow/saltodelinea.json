@@ -21,7 +21,11 @@
 					"name": "APMD"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          {ID de usuario} as string,",
@@ -47,7 +51,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     skipLines: 1) ~> AP",
-				"AP sink(allowSchemaDrift: true,",
+				"AP derive({Título de entidad} = replace({Título de entidad}, \"\\n\", \"\")) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> APMD"
