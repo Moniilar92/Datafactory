@@ -1,0 +1,39 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AP",
+						"type": "DatasetReference"
+					},
+					"name": "AP"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "APDM",
+						"type": "DatasetReference"
+					},
+					"name": "APMD"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          {\"ID de usuario\"|\"Usuario activo\"|\"Apellidos\"|\"Nombre\"|\"Segundo nombre\"|\"ID de entidad\"|\"Tipo de item de aprendizaje\"|\"Tipo de entidad\"|\"Fecha de revisión\"|\"Número de revisión\"|\"Título de entidad\"|\"Fecha de vencimiento\"|\"Días rest.\"|\"Zona horaria preferida\"|\"Tipo de asignación\"|\"ID de programa de estudios\"|\"Fecha de finalización\"|\"Fecha de suspenso\"} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AP",
+				"AP sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> APMD"
+			]
+		}
+	}
+}
