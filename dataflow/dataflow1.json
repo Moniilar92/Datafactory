@@ -26,7 +26,7 @@
 				"source(output(",
 				"          {\"ID de usuario\"|\"Usuario activo\"|\"Apellidos\"|\"Nombre\"|\"Segundo nombre\"|\"ID de entidad\"|\"Tipo de item de aprendizaje\"|\"Tipo de entidad\"|\"Fecha de revisión\"|\"Número de revisión\"|\"Título de entidad\"|\"Fecha de vencimiento\"|\"Días rest.\"|\"Zona horaria preferida\"|\"Tipo de asignación\"|\"ID de programa de estudios\"|\"Fecha de finalización\"|\"Fecha de suspenso\"} as string",
 				"     ),",
-				"     allowSchemaDrift: true,",
+				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> AP",
 				"AP sink(allowSchemaDrift: true,",
