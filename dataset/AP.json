@@ -20,7 +20,75 @@
 		},
 		"schema": [
 			{
-				"name": "\"ID de usuario\"|\"Usuario activo\"|\"Apellidos\"|\"Nombre\"|\"Segundo nombre\"|\"ID de entidad\"|\"Tipo de item de aprendizaje\"|\"Tipo de entidad\"|\"Fecha de revisión\"|\"Número de revisión\"|\"Título de entidad\"|\"Fecha de vencimiento\"|\"Días rest.\"|\"Zona horaria preferida\"|\"Tipo de asignación\"|\"ID de programa de estudios\"|\"Fecha de finalización\"|\"Fecha de suspenso\"",
+				"name": "ID de usuario",
+				"type": "String"
+			},
+			{
+				"name": "Usuario activo",
+				"type": "String"
+			},
+			{
+				"name": "Apellidos",
+				"type": "String"
+			},
+			{
+				"name": "Nombre",
+				"type": "String"
+			},
+			{
+				"name": "Segundo nombre",
+				"type": "String"
+			},
+			{
+				"name": "ID de entidad",
+				"type": "String"
+			},
+			{
+				"name": "Tipo de item de aprendizaje",
+				"type": "String"
+			},
+			{
+				"name": "Tipo de entidad",
+				"type": "String"
+			},
+			{
+				"name": "Fecha de revisión",
+				"type": "String"
+			},
+			{
+				"name": "Número de revisión",
+				"type": "String"
+			},
+			{
+				"name": "Título de entidad",
+				"type": "String"
+			},
+			{
+				"name": "Fecha de vencimiento",
+				"type": "String"
+			},
+			{
+				"name": "Días rest.",
+				"type": "String"
+			},
+			{
+				"name": "Zona horaria preferida",
+				"type": "String"
+			},
+			{
+				"name": "Tipo de asignación",
+				"type": "String"
+			},
+			{
+				"name": "ID de programa de estudios",
+				"type": "String"
+			},
+			{
+				"name": "Fecha de finalización",
+				"type": "String"
+			},
+			{
+				"name": "Fecha de suspenso",
 				"type": "String"
 			}
 		]
