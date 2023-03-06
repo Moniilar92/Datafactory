@@ -23,7 +23,8 @@
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
+					"name": "derivedColumn1",
+					"description": "Creando o actualizando las columnas "
 				}
 			],
 			"scriptLines": [
