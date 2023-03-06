@@ -13,9 +13,9 @@
 				"fileName": "APDM",
 				"container": "ecpuniversidades"
 			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"columnDelimiter": "|",
+			"escapeChar": "\"",
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
 		"schema": []
