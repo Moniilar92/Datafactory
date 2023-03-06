@@ -1,0 +1,28 @@
+{
+	"name": "AP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "UserLearningPlanCSV.csv",
+				"container": "ecpuniversidades"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "\"ID de usuario\"|\"Usuario activo\"|\"Apellidos\"|\"Nombre\"|\"Segundo nombre\"|\"ID de entidad\"|\"Tipo de item de aprendizaje\"|\"Tipo de entidad\"|\"Fecha de revisión\"|\"Número de revisión\"|\"Título de entidad\"|\"Fecha de vencimiento\"|\"Días rest.\"|\"Zona horaria preferida\"|\"Tipo de asignación\"|\"ID de programa de estudios\"|\"Fecha de finalización\"|\"Fecha de suspenso\"",
+				"type": "String"
+			}
+		]
+	}
+}
